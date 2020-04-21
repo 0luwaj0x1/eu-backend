@@ -11,18 +11,36 @@ const getByName = async (req, res) => {
 
 
 const getFromList = async (req, res) => {
-const words =  req.query.words
-const arrayOfStrings = words.toLowerCase().split(',').join('').split('')
-console.log(arrayOfStrings)
-const result = await axios.get(`${baseUrl}/all`)
-const filteredcountries = result.data.filter((country) => {
- // if(arrayOfStrings.in)
- // come back and solve the nested for loop problem here.
-})
-res.send(filteredcountries)
+  const words =  req.query.words
+  const arrayOfStrings = words.replace(/[^\w]/g, '').toLowerCase().split(',').join('').split('')
+  const result = await fetchAllCountries()
+  const filteredcountries = result.data.filter((country) => {
+    if(checkArray(arrayOfStrings, country.name.replace(/[^\w]/g, '').toLowerCase().split('')))
+    return country;
+  })
+  res.send(filteredcountries)
 }
+
+
+const getAll = async (req, res) => {
+  const result = await fetchAllCountries();
+  res.send(result.data)
+}
+
+
+fetchAllCountries = () => {
+  return axios.get(`${baseUrl}/all`)
+}
+
+
+const checkArray = (arr1, arr2) => {
+   return arr1.some(item => arr2.includes(item))
+}
+
+
 
 module.exports = {
   getByName,
-  getFromList
+  getFromList,
+  getAll
 };

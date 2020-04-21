@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const router = require('./routers')
+const errorHandlers = require('./handlers/errorHandlers');
 require('dotenv').config({path: 'variables.env'})
 
 
@@ -15,11 +16,9 @@ app.use(bodyParser.urlencoded({ extended: false}))
 
 
 app.use('/api', router)
-/* app.get('/:name',[check('name').isAlpha()], (req, res) => {
-  console.log(validationResult(req))
-  res.send(req.params)
-})
- */
+
+// production error handler
+app.use(errorHandlers.productionErrors);
 
 const start = () => {
   app.listen(process.env.PORT || 4000, () => { console.log('server started 🚀🚀🚀🚀')})
