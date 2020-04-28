@@ -21,7 +21,7 @@ app.use('/api', router)
 app.use(errorHandlers.productionErrors);
 
 const start = () => {
-  app.listen(process.env.PORT || 4000, () => { console.log('server started 🚀🚀🚀🚀')})
+  app.listen(process.env.PORT || 4000, () => { console.log('server started 🚀🚀🚀🚀',process.env.PORT )})
 }
 
 module.exports = {
